@@ -14,8 +14,10 @@ min3 : comparable -> comparable -> comparable -> comparable
 min3 a b c =
     if a <= b && a <= c then
         a
+
     else if b <= c then
         b
+
     else
         c
 
@@ -37,14 +39,16 @@ patternLoop textHead pattern idx b0 b1 b2 prev =
                 b2_ =
                     if textHead == patternHead then
                         b0
+
                     else
                         1 + min3 b0 b1 b2
             in
-                b2_ :: patternLoop textHead patternTail (idx + 1) b0_ b1_ b2_ prevTail
+            b2_ :: patternLoop textHead patternTail (idx + 1) b0_ b1_ b2_ prevTail
 
         ( patternHead :: _, [] ) ->
             if textHead == patternHead then
                 [ b0 ]
+
             else
                 [ 1 + min3 b0 b1 b2 ]
 
@@ -65,13 +69,16 @@ initPatternLoop textHead pattern b0 prevCol =
 textLoop : List comparable -> List comparable -> Int -> List Int -> List Int
 textLoop text pattern idx col =
     case text of
-        textHead :: textTail ->
-            col
-                |> initPatternLoop textHead pattern (idx - 1)
-                |> textLoop textTail pattern (idx + 1)
-
         [] ->
             col
+
+        textHead :: textTail ->
+            let
+                nextCol : List Int
+                nextCol =
+                    initPatternLoop textHead pattern (idx - 1) col
+            in
+            textLoop textTail pattern (idx + 1) nextCol
 
 
 last : List a -> Maybe a
@@ -115,18 +122,21 @@ levenshtein text pattern =
         ( [ textHead ], _ ) ->
             if List.any ((==) textHead) pattern then
                 List.length pattern - 1
+
             else
                 List.length pattern
 
         ( _, [ patternHead ] ) ->
             if List.any ((==) patternHead) text then
                 List.length text - 1
+
             else
                 List.length text
 
         ( textHead :: textTail, patternHead :: patternTail ) ->
             if textHead == patternHead then
                 levenshtein textTail patternTail
+
             else
                 List.range 1 (List.length pattern)
                     |> textLoop text pattern 1

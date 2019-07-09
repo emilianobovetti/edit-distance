@@ -12,17 +12,17 @@ all: docs test
 
 .PHONY: docs
 docs :
-	@mkdir -p $(build_dir)
-	@$(elm_bin) make --docs=$(build_dir)/documentation.json
+	mkdir -p $(build_dir)
+	$(elm_bin) make --docs=$(build_dir)/documentation.json
 
 .PHONY: test
 test :
-	@$(elm_test)
+	$(elm_test)
 
 .PHONY: analyse
 analyse :
-	@$(elm_analyse)
+	$(elm_analyse)
 
 .PHONY: clean
 clean :
-	@rm -rf elm-stuff $(build_dir)
+	rm -rf elm-stuff $(build_dir)
