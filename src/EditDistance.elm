@@ -148,4 +148,8 @@ levenshtein text pattern =
 -}
 levenshteinOfStrings : String -> String -> Int
 levenshteinOfStrings text pattern =
-    levenshtein (String.toList text) (String.toList pattern)
+    if String.length pattern > String.length text then
+        levenshteinOfStrings pattern text
+
+    else
+        levenshtein (String.toList text) (String.toList pattern)
