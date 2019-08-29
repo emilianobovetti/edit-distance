@@ -22,7 +22,7 @@ $(docs_target) : $(build_dir) $(node_bin)
 	$(elm_bin) make --docs=$(docs_target)
 
 test : $(node_bin)
-	$(elm_test)
+	$(elm_test) --compiler $(elm_bin)
 
 analyse : $(node_bin)
 	$(elm_analyse)
