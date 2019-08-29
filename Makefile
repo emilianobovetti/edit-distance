@@ -1,28 +1,31 @@
 # directories
-base_dir := $(CURDIR)
-test_dir := $(base_dir)/tests
-build_dir := $(base_dir)/build
+build_dir := build
+node_bin := node_modules/.bin
+# target files
+docs_target := $(build_dir)/documentation.json
 # node_modules executables
-elm_bin := elm
-elm_test := elm-test
-elm_analyse := elm-analyse
+elm_bin := $(node_bin)/elm
+elm_test := $(node_bin)/elm-test
+elm_analyse := $(node_bin)/elm-analyse
 
-# TODO add analyse
-all: docs test
+.PHONY: all test analyse clean
 
-.PHONY: docs
-docs :
+all: $(docs_target) analyse test
+
+$(build_dir) :
 	mkdir -p $(build_dir)
-	$(elm_bin) make --docs=$(build_dir)/documentation.json
 
-.PHONY: test
-test :
+$(node_bin) :
+	yarn
+
+$(docs_target) : $(build_dir) $(node_bin)
+	$(elm_bin) make --docs=$(docs_target)
+
+test : $(node_bin)
 	$(elm_test)
 
-.PHONY: analyse
-analyse :
+analyse : $(node_bin)
 	$(elm_analyse)
 
-.PHONY: clean
 clean :
-	rm -rf elm-stuff $(build_dir)
+	rm -rf node_modules elm-stuff $(build_dir)
