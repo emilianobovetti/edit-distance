@@ -24,35 +24,37 @@ min3 a b c =
 
 patternLoop : comparable -> List comparable -> Int -> Int -> Int -> Int -> List Int -> List Int
 patternLoop textHead pattern idx b0 b1 b2 prev =
-    case ( pattern, prev ) of
-        ( patternHead :: patternTail, prevHead :: prevTail ) ->
-            let
-                b0_ : Int
-                b0_ =
-                    b1
+    case pattern of
+        patternHead :: patternTail ->
+            case prev of
+                prevHead :: prevTail ->
+                    let
+                        b0_ : Int
+                        b0_ =
+                            b1
 
-                b1_ : Int
-                b1_ =
-                    prevHead
+                        b1_ : Int
+                        b1_ =
+                            prevHead
 
-                b2_ : Int
-                b2_ =
+                        b2_ : Int
+                        b2_ =
+                            if textHead == patternHead then
+                                b0
+
+                            else
+                                1 + min3 b0 b1 b2
+                    in
+                    b2_ :: patternLoop textHead patternTail (idx + 1) b0_ b1_ b2_ prevTail
+
+                [] ->
                     if textHead == patternHead then
-                        b0
+                        [ b0 ]
 
                     else
-                        1 + min3 b0 b1 b2
-            in
-            b2_ :: patternLoop textHead patternTail (idx + 1) b0_ b1_ b2_ prevTail
+                        [ 1 + min3 b0 b1 b2 ]
 
-        ( patternHead :: _, [] ) ->
-            if textHead == patternHead then
-                [ b0 ]
-
-            else
-                [ 1 + min3 b0 b1 b2 ]
-
-        _ ->
+        [] ->
             []
 
 
