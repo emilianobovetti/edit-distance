@@ -9,25 +9,27 @@ unit : Test
 unit =
     describe "EditDistance"
         [ describe "#levenshtein"
-            [ test "should be zero on empty lists" <|
+            [ test "should be 0 on empty lists" <|
                 \_ -> Expect.equal 0 (levenshtein [] [])
-            , test "should be zero on [0] [0]" <|
+            , test "should be 0 on [0] [0]" <|
                 \_ -> Expect.equal 0 (levenshtein [ 0 ] [ 0 ])
-            , test "should be one on [] [0]" <|
+            , test "should be 1 on [] [0]" <|
                 \_ -> Expect.equal 1 (levenshtein [] [ 0 ])
-            , test "should be one on [0] []" <|
+            , test "should be 1 on [0] []" <|
                 \_ -> Expect.equal 1 (levenshtein [ 0 ] [])
-            , test "should be one on [0] [1]" <|
+            , test "should be 1 on [0] [1]" <|
                 \_ -> Expect.equal 1 (levenshtein [ 0 ] [ 1 ])
-            , test "should be one on [1] [0]" <|
+            , test "should be 1 on [1] [0]" <|
                 \_ -> Expect.equal 1 (levenshtein [ 1 ] [ 0 ])
             ]
         , describe "#levenshteinOfStrings"
-            [ test "should be zero on empty strings" <|
+            [ test "should be 0 on empty strings" <|
                 \_ -> Expect.equal 0 (levenshteinOfStrings "" "")
-            , test "should be one on 'kitten' 'sitten'" <|
+            , test "should be 1 on 'kitten' 'sitten'" <|
                 \_ -> Expect.equal 1 (levenshteinOfStrings "kitten" "sitten")
-            , test "should be one on 'sittin' 'sitting'" <|
+            , test "should be 1 on 'sittin' 'sitting'" <|
                 \_ -> Expect.equal 1 (levenshteinOfStrings "sittin" "sitting")
+            , test "should work with surrogate pairs" <|
+                \_ -> Expect.equal 1 (levenshteinOfStrings "x" "🚀")
             ]
         ]

@@ -150,7 +150,10 @@ levenshtein text pattern =
 -}
 levenshteinOfStrings : String -> String -> Int
 levenshteinOfStrings text pattern =
-    if String.length pattern > String.length text then
+    if text == pattern then
+        0
+
+    else if String.length pattern > String.length text then
         levenshteinOfStrings pattern text
 
     else
