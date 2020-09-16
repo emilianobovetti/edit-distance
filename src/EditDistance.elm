@@ -9,17 +9,25 @@ module EditDistance exposing (levenshtein, levenshteinOfStrings)
 
 -}
 
+import Bitwise
 
-min3 : comparable -> comparable -> comparable -> comparable
+
+min3 : Int -> Int -> Int -> Int
 min3 a b c =
-    if a <= b && a <= c then
-        a
+    let
+        diff1 : Int
+        diff1 =
+            a - b
 
-    else if b <= c then
-        b
+        minAB : Int
+        minAB =
+            b + Bitwise.and diff1 (Bitwise.shiftRightBy 31 diff1)
 
-    else
-        c
+        diff2 : Int
+        diff2 =
+            minAB - c
+    in
+    c + Bitwise.and diff2 (Bitwise.shiftRightBy 31 diff2)
 
 
 patternLoop : comparable -> List comparable -> Int -> Int -> Int -> Int -> List Int -> List Int
