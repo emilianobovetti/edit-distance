@@ -30,8 +30,8 @@ min3 a b c =
     c + Bitwise.and diff2 (Bitwise.shiftRightBy 31 diff2)
 
 
-patternLoop : comparable -> List comparable -> Int -> Int -> Int -> Int -> List Int -> List Int
-patternLoop textHead pattern idx b0 b1 b2 prev =
+patternLoop : comparable -> List comparable -> Int -> Int -> Int -> List Int -> List Int
+patternLoop textHead pattern b0 b1 b2 prev =
     case pattern of
         patternHead :: patternTail ->
             case prev of
@@ -53,7 +53,7 @@ patternLoop textHead pattern idx b0 b1 b2 prev =
                             else
                                 1 + min3 b0 b1 b2
                     in
-                    b2_ :: patternLoop textHead patternTail (idx + 1) b0_ b1_ b2_ prevTail
+                    b2_ :: patternLoop textHead patternTail b0_ b1_ b2_ prevTail
 
                 [] ->
                     if textHead == patternHead then
@@ -70,7 +70,7 @@ initPatternLoop : comparable -> List comparable -> Int -> List Int -> List Int
 initPatternLoop textHead pattern b0 prevCol =
     case prevCol of
         prevHead :: prevTail ->
-            patternLoop textHead pattern 1 b0 prevHead (b0 + 1) prevTail
+            patternLoop textHead pattern b0 prevHead (b0 + 1) prevTail
 
         _ ->
             []
@@ -97,10 +97,7 @@ last list =
         [ value ] ->
             Just value
 
-        [ _, value ] ->
-            Just value
-
-        _ :: _ :: tail ->
+        _ :: tail ->
             last tail
 
         [] ->
@@ -162,7 +159,7 @@ levenshteinOfStrings text pattern =
         0
 
     else if String.length pattern > String.length text then
-        levenshteinOfStrings pattern text
+        levenshtein (String.toList pattern) (String.toList text)
 
     else
         levenshtein (String.toList text) (String.toList pattern)
